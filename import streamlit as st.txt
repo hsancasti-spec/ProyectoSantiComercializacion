@@ -1,0 +1,32 @@
+import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parámetros iniciales
+st.title("Gemelo Digital - Aula con Aire Acondicionado")
+
+# Configuración del aula
+num_alumnos = st.slider("Cantidad de alumnos", 5, 50, 20)
+temp_inicial = st.slider("Temperatura inicial del aula (°C)", 20, 35, 28)
+aire_encendido = st.checkbox("Encender aire acondicionado")
+potencia_aire = st.slider("Potencia del aire (°C por minuto)", 0.0, 2.0, 1.0)
+
+# Simulación
+tiempo = np.arange(0, 60, 1)  # 60 minutos
+temperatura = []
+
+temp = temp_inicial
+for t in tiempo:
+    # Cada alumno aporta calor (ejemplo: 0.05°C por minuto)
+    temp += num_alumnos * 0.05 / 60
+    
+    # Aire acondicionado enfría si está encendido
+    if aire_encendido:
+        temp -= potencia_aire / 60
+    
+    temperatura.append(temp)
+
+# Mostrar resultados
+st.line_chart(temperatura)
+
+st.write(f"Temperatura final después de 60 minutos: {temperatura[-1]:.2f} °C")
